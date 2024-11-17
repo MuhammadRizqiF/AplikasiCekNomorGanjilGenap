@@ -41,6 +41,11 @@ public class CekNomorForm extends javax.swing.JFrame {
 
         lblHasil.setText("Hasil Cek Angka");
 
+        txtInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtInputFocusGained(evt);
+            }
+        });
         txtInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtInputKeyTyped(evt);
@@ -64,11 +69,11 @@ public class CekNomorForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCek))
+                        .addComponent(btnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblHasil))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,6 +90,21 @@ public class CekNomorForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+private boolean isPrime(int num) {
+    // Bilangan prima adalah bilangan lebih dari 1
+    if (num <= 1) {
+        return false;
+    }
+
+    // Periksa pembagi dari 2 hingga akar kuadrat dari angka
+    for (int i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i == 0) {
+            return false; // Jika habis dibagi, bukan bilangan prima
+        }
+    }
+
+    return true; // Jika tidak ada pembagi, maka bilangan prima
+}
 
     private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
 btnCek.addActionListener(new ActionListener() {
@@ -102,9 +122,14 @@ btnCek.addActionListener(new ActionListener() {
             } else {
                 hasil = "Angka " + angka + " adalah bilangan ganjil.";
             }
-
-            // Tampilkan hasil menggunakan JLabel
-            lblHasil.setText(hasil);
+            // Periksa bilangan prima
+            if (isPrime(angka)) {
+                hasil += " dan bilangan prima.";
+            } else {
+                hasil += " dan bukan bilangan prima.";
+            }
+            // Tampilkan hasil menggunakan JLabel   
+            JOptionPane.showMessageDialog(null, hasil, "Hasil", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
             // Jika input tidak valid
             JOptionPane.showMessageDialog(null, "Masukkan angka yang valid!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -125,6 +150,16 @@ txtInput.addKeyListener(new java.awt.event.KeyAdapter() {
 });
         // TODO add your handling code here:
     }//GEN-LAST:event_txtInputKeyTyped
+
+    private void txtInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtInputFocusGained
+txtInput.addFocusListener(new java.awt.event.FocusAdapter() {
+    @Override
+    public void focusGained(java.awt.event.FocusEvent evt) {
+        txtInput.setText(""); // Kosongkan JTextField ketika fokus
+    }
+});
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtInputFocusGained
 
     /**
      * @param args the command line arguments
